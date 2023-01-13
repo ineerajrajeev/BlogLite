@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WeasyPrint Report</title>
+  </head>
+  <body>
+    <div class="report-header">
+      <h1>BlogLite</h1>
+      <p style="text-align: center;">
+        <strong>Report for: </strong>{{data['user']['name']}} {{data['user']['surname']}}
+      </p>
+      <p style="text-align: center;">
+        <strong>Username:</strong>{{data['user']['username']}}
+      </p>
+      <p style="text-align: center;">
+        <strong>Email:</strong> {{data['user']['email']}}
+      </p>
+      <p>Date: {{data['date']}}</p>
+    </div>
+  
+    <h3>Likes to posts this month</h3>
+    <table>
+      <tr>
+        <th>Title</th>
+        <th>Likes</th>
+        <th>Current state</th>
+      {% for blog in data['blogs'] %}
+      <tr>
+        <td>{{blog.title}}</td>
+        <td>{{blog.likes}}</td>
+        <td>{{"Visible" if blog.state else "Hidden"}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <h3>Counts of posts last year</h3>
+    <table>
+      <tr>
+        <th>Month-Year</th>
+        <th>Posts
+      {% for post in data['months'].keys() %}
+      <tr>
+        <td>{{post}}</td>
+        <td>{{ data['months'][post] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <h3>Articles this month</h3>
+    {% for blog in data['blogs'] %}
+      <article>
+        <h4>{{ blog.title }}</h4>
+        <p>Created on: {{ blog.date_created }}</p>
+        <p>{{ blog.description }}</p>
+      </article>
+    {% endfor %}
+  </body>
+  <style>
+    /* Define the font and color scheme for the entire document */
+    body {
+      font-family: Arial, sans-serif;
+      color: #333333;
+    }
+
+    /* Style the heading */
+    h1 {
+      color: #006699;
+      text-align: center;
+    }
+
+    h3 {
+      text-align: center;
+    }
+
+    /* Define the table */
+table {
+  width: 80%;
+  margin: 50px auto;
+  border-collapse: collapse;
+}
+
+/* Style the table cells */
+td, th {
+  border: 1px solid #dddddd;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Add hover effect to table rows */
+tr:hover {
+  background-color: #f2f2f2;
+}
+
+/* Style the table headings */
+th {
+  background-color: #006699;
+  color: white;
+  font-size: 18px;
+  padding: 20px;
+}
+
+/* Add diagonal lines to table cells */
+td:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  transform: rotate(-45deg);
+  width: 20px;
+  height: 20px;
+  background-color: #f2f2f2;
+}
+
+/* Add background color to alternate table rows */
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+    .report-header {
+      background-color: #edf3f6;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .report-header h1 {
+      color: #006699;
+    }
+
+    .report-header p {
+      color: #333333;
+      font-size: 0.8em;
+      line-height: 0.8em;
+
+    }
+
+  </style>
+</html>
