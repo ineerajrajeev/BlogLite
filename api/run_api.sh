@@ -18,7 +18,7 @@ fi
 . .env/bin/activate
 
 # Make sure redis server is running
-services redis-server restart
+service redis-server restart
 
 # Upgrade the PIP
 pip install --upgrade pip

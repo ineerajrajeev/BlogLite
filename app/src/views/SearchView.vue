@@ -55,7 +55,7 @@
                 <img :src="profile_pic(u.username)" />
               </div>
               </span>
-              <a class="mt-1 text-gray-500 text-sm" :href="'/user/'+u.username">@{{ u.username }}</a>
+              <p class="mt-1 text-gray-500 text-sm">@{{ u.username }}</p>
             </div>
             <div class="md:flex-grow">
               <h2 class="text-2xl font-medium text-gray-900 title-font mb-2">
@@ -67,6 +67,7 @@
               <button class="button-33" role="button" @click.prevent = 'follow(u.username)'>Follow</button> .
               <button class="button-77" role="button" @click.prevent = 'unfollow(u.username)'>Unollow</button><br />
               <a class="text-indigo-500 inline-flex items-center mt-4"
+              :href="'/user/'+u.username"
                 >View Profile
                 <svg
                   class="w-4 h-4 ml-2"

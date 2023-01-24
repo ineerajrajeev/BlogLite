@@ -80,7 +80,7 @@
                           >
                             <i class="bx bx-export"></i>
                           </a>
-                          <br />
+                          <br /><br />
                           <div class="flex border-t border-gray-200 py-2">
                             {{ blog.blog.description }}
                           </div>

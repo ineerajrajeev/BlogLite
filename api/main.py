@@ -350,7 +350,7 @@ class get_blog_image(Resource):
             return make_response(jsonify({'message': 'Blog not found!'}), 404)
         if blog.img is None:
             unsplash_api_key = "p2s_7irxZGk0HZKPVv7tuUpQl_rCFxaHdxEcWrlqFiA"
-            params = {'query': blog.title, 'client_id': unsplash_api_key}
+            params = {'query': blog.caption, 'client_id': unsplash_api_key}
             response = requests.get(
                 'https://api.unsplash.com/search/photos', params=params)
             data = response.json()
@@ -466,6 +466,7 @@ class fetch_profile_posts(Resource):
             }
             blogs_list.append(
                 {'blog': blog.serialize(), 'author': author_details})
+        blogs_list.sort(key=lambda x: x['blog']['date_created'], reverse=True)
         return make_response(jsonify({'message': blogs_list, 'status': 'success'}), 200)
 
 api.add_resource(fetch_profile_posts, '/api/fetch_profile_posts')
@@ -595,9 +596,10 @@ api.add_resource(edit_blog, '/api/edit_blog')
 
 # Export all blogs to CSV format
 class export_csv(Resource):
+    method_decorators = [token_required]
 
-    def get(self):
-        user = user_data.query.filter_by(username='shetkarrohan').first()
+    def get(self, current_user):
+        user = user_data.query.filter_by(username=current_user.username).first()
         if user is None:
             return make_response(jsonify({'message': 'User not found!','status': 'error'}), 404)
         csv_data = io.StringIO()
@@ -738,7 +740,7 @@ def pdf_report(current_user):
     year_log = {}
     month = datetime.now().month
     for i in range(month+1, month + 13):
-        if i < 12:
+        if i <= 12:
             month = i
             year = int(datetime.now().year) - 1
             year_log["{} {}".format(months[month - 1], year)] = (blogs.query.filter_by(author=user.id).filter(extract('month', blogs.date_created) == month, extract('year', blogs.date_created) == year).count())

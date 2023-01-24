@@ -109,9 +109,7 @@
                           <div
                             class="w-12 h-1 bg-indigo-500 rounded mt-2 mb-4"
                           ></div>
-                          <a class="text-base" :href="'/user/' + user.username">
-                            @{{ user.username }}
-                          </a>
+                          <p class="text-base">@{{ user.username }}</p>
                         </div>
                       </div>
                       <div
@@ -126,12 +124,6 @@
                         <p class="text-xs text-gray-500">
                           Likes: {{ blog.likes }}
                         </p>
-                        <button
-                          class="button-77"
-                          @click="like_post(blog.blog_id)"
-                        >
-                          Like <i class="bx bx-plus"></i></button
-                        ><br />
                         <p class="leading-relaxed text-lg mb-4 mt-3">
                           {{ blog.description }}
                         </p>

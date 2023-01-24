@@ -93,7 +93,7 @@
                   </a>
                 </span>
                 <span class="text-base">
-                  <a class="button-44" href="http://127.0.0.1:5000/export_csv">
+                  <a class="button-44" @click.prevent="downloadCSV">
                     <i class='bx bxs-file-export'></i>
                     <span> Export CSV</span>
                   </a>
@@ -338,23 +338,38 @@ export default {
       this.user.profile_pic = event.target.files[0];
       console.log(this.user.profile_pic);
     },
+    downloadCSV() {
+      const url = "http://127.0.0.1:5000/export_csv";
+      const token = localStorage.getItem("blog_lite_token");
+      axios({
+        url: url,
+        method: "GET",
+        responseType: "blob", // important
+        headers: {
+          "x-access-token": token,
+        },
+      }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        const file_name = "csv_export.csv";
+        link.href = url;
+        link.setAttribute("download", file_name);
+        document.body.appendChild(link);
+        link.click();
+      });
+    },
     commitChanges() {
       const formData = new FormData();
       formData.append("bio", this.user.bio);
       formData.append("email", this.user.email);
       formData.append("website", this.user.website);
       formData.append("img", this.user.profile_pic);
-      axios
-        .post("http://127.0.0.1:5000/api/update_user", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "x-access-token": localStorage.getItem("blog_lite_token"),
-          },
-        })
-        .then((response) => {
-          response.json();
-        })
-        .then(window.location.reload());
+      axios.post("http://127.0.0.1:5000/api/update_user", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "x-access-token": localStorage.getItem("blog_lite_token"),
+        },
+      });
     },
   },
   data() {
